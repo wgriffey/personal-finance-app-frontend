@@ -48,4 +48,26 @@ export default class APIService{
         })
         return await res.json()
     }
+
+    static async GetTransactionDataFromPlaid(token: any){
+        const res = await fetch(`http://127.0.0.1:8000/api/get_transactions_from_plaid`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${token}`
+            }
+        })
+        return await res.json()
+    }
+
+    static async GetTransactionDataFromDB(token: any){
+        const res = await fetch(`http://127.0.0.1:8000/api/get_transactions_from_db`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${token}`
+            }
+        })
+        return await res.json()
+    }
 }
