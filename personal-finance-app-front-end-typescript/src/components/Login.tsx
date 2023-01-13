@@ -57,7 +57,7 @@ function Login() {
             justifyContent="center"
             flexDirection='row'
             alignItems='center'
-            sx={{textAlign: 'center', mt: 35, ml: 55, border: 1, borderRadius: '25px', borderWidth: '3px', width: '50%'}}>
+            sx={{textAlign: 'center', mt: 35, ml: 57, border: 1, borderRadius: '25px', borderWidth: '3px', width: '50%'}}>
                 <Grid xs={12}>
                     {isLogin ? <h1 style={{textAlign:'center'}} className='pb-4 pt-4'>Log In</h1> : <h1 className='pb-4 pt-4'>Register</h1>}
                     <FormControl sx={{mt: 1, width: '75ch'}} variant='outlined'>
@@ -94,8 +94,10 @@ function Login() {
                                 aria-label='Toggle Password Visibility'
                                 onClick={handleClickShowPassword}
                                 onMouseDown={handleMouseDownPassword}
-                                edge='end'>
+                                edge='end'
+                                sx={{color: 'white'}}>
                                     {showPassword ? <VisibilityOff /> : <Visibility />}
+                                
                                 </IconButton>
                             </InputAdornment>
                         }
