@@ -2,11 +2,18 @@ import React, { useEffect, useState } from 'react'
 import APIService from '../APIService'
 import { useCookies } from 'react-cookie'
 import {useNavigate} from 'react-router-dom'
+import Grid from '@mui/material/Unstable_Grid2';
+import TextField from '@mui/material/TextField';
+import FormControl from '@mui/material/FormControl';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { Alert, Box, Button, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
 
 function Login() {
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [showPassword, setShowPassword] = React.useState(false);
     const [email, setEmail] = useState('')
     const [isLogin, setIsLogin] = useState(true)
     const [isLoginError, setIsLoginError] = useState(false)
@@ -18,6 +25,12 @@ function Login() {
             navigate('/')
         }
     }, [userToken])
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+    };
 
     const onLogIn = () => {
         APIService.LogInUser({username, password})
@@ -40,33 +53,73 @@ function Login() {
 
   return (
     <div className='App'>
-        {isLogin ? <h1 className='pb-4 pt-4'>Log In</h1> : <h1 className='pb-4 pt-4'>Register</h1>}
+        <Grid container rowSpacing={2}
+            justifyContent="center"
+            flexDirection='row'
+            alignItems='center'
+            sx={{textAlign: 'center', mt: 35, ml: 55, border: 1, borderRadius: '25px', borderWidth: '3px', width: '50%'}}>
+                <Grid xs={12}>
+                    {isLogin ? <h1 style={{textAlign:'center'}} className='pb-4 pt-4'>Log In</h1> : <h1 className='pb-4 pt-4'>Register</h1>}
+                    <FormControl sx={{mt: 1, width: '75ch'}} variant='outlined'>
+                        <InputLabel sx={{color: 'white'}} htmlFor='username' error = {isLoginError}>Username</InputLabel>
+                        <OutlinedInput
+                        id='username'
+                        label='Username'
+                        sx={{fieldset: {borderColor: 'white'}, color: 'white'}}
+                        onChange={(e) => setUsername(e.target.value)}
+                        error = {isLoginError}
+                        />
+                    </FormControl>
+                </Grid>
 
-        <div className='mb-3'>
-            <label htmlFor='username' className='form-label'>Username</label>
-            <input type='text' className='form-control form-text' id='username' placeholder='Please Enter Username' onChange={(e) => setUsername(e.target.value)}/>
-        </div>
-        {!isLogin ? 
-                <div className='mb-3'>
-                    <label htmlFor='email' className='form-label'>E-mail</label>
-                    <input type='email' className='form-control form-text' id='email' placeholder='Please Enter E-mail Address' onChange={(e) => setEmail(e.target.value)}/>
-                </div> 
-        : null}
-        <div className='mb-3'>
-            <label htmlFor='password' className='form-label'>Password</label>
-            <input type='password' className='form-control form-text' id='password' placeholder='Please Enter Password' onChange={(e) => setPassword(e.target.value)}/>
-        </div>
+                {!isLogin ? 
+                    <Grid xs={12}>
+                        <FormControl sx={{mt: 1, width: '75ch'}} variant='outlined'>
+                            <InputLabel sx={{color: 'white'}} htmlFor='email' error = {isLoginError}>E-mail</InputLabel>
+                            <OutlinedInput type='email' id='email' sx={{fieldset: {borderColor: 'white', }, color: 'white'}} label='E-mail' onChange={(e) => setEmail(e.target.value)} error = {isLoginError}/>
+                        </FormControl>
+                    </Grid> 
+                : null}
 
-        {isLoginError ? <p className='text text-bg-danger'>You have entered an invalid username or password!</p> : null}
-        
-        {isLogin ? <button className='btn btn-primary' onClick={onLogIn}>Log In</button> : <button className='btn btn-primary' onClick={onSignUp}>SignUp</button>}
-        
+                <Grid xs={12}>
+                    <FormControl sx={{mt: 1, width: '75ch'}} variant='outlined'>
+                        <InputLabel sx={{color: 'white'}} htmlFor='password' error = {isLoginError}>Password</InputLabel>
+                        <OutlinedInput
+                        id='password'
+                        type={showPassword ? 'text' : 'password'}
+                        sx={{fieldset: {borderColor: 'white'}, color: 'white'}}
+                        endAdornment={
+                            <InputAdornment position='end'>
+                                <IconButton
+                                aria-label='Toggle Password Visibility'
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                                edge='end'>
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        }
+                        label='Password'
+                        onChange={(e) => setPassword(e.target.value)}
+                        error = {isLoginError}
+                        />
+                    </FormControl>
+                </Grid>
+                
+                {isLoginError ? <Alert severity="error" sx={{ mt: 1, width: '400px', textAlign: 'center'}}>You have entered an invalid username{isLogin ? ' or password' : ' email, or password'}!</Alert> : null}
 
-        <div className='mb-3'>
-            <br/>
-            {isLogin ? <h5>If you don't have an account, <button className='btn btn-outline-primary' onClick={() => setIsLogin(false)}>Sign Up</button></h5> : 
-            <h5>If you have an account, <button className='btn btn-outline-primary' onClick={() => setIsLogin(true)}>Log In</button></h5>}
-        </div>
+                <Grid xs={12}>
+                    {isLogin ? <Button variant="outlined" color="primary" sx={{mt: 1, textAlign: 'center'}} onClick={onLogIn}>Log In</Button> : <Button variant="outlined" color="primary" sx={{mt: 1}} onClick={onSignUp}>SignUp</Button>}
+                </Grid>   
+
+                <br/>
+                {isLogin ? <h3>If you don't have an account, <Button variant="outlined" color="primary" onClick={() => {setIsLogin(false); setIsLoginError(false);}}>Sign Up</Button></h3> : 
+                <h5>If you have an account, <Button variant="outlined" color="primary" onClick={() => {setIsLogin(true); setIsLoginError(false);}}>Log In</Button></h5>}
+        </Grid>
+
+        <>
+
+        </>
     </div>
   )
 }

@@ -2,6 +2,8 @@ import React from 'react';
 import { LinkProps } from '../interfaces/LinkProps';
 import { usePlaidLink } from 'react-plaid-link';
 import APIService from '../APIService';
+import Button from '@mui/material/Button';
+
 
 
 function PlaidLinkButton(props: LinkProps) {
@@ -42,9 +44,9 @@ function PlaidLinkButton(props: LinkProps) {
     };
     const { open, ready } = usePlaidLink(config);
     return (
-        <button className='btn btn-outline-success' onClick={() => open()} disabled={!ready}>
+        <Button variant="outlined" color="error" sx={{mt: 1}} onClick={() => open()} disabled={!ready}>
           Link Accounts
-        </button>
+        </Button>
     );
 };
 
