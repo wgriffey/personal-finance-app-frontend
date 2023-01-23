@@ -3,11 +3,10 @@ import APIService from '../APIService'
 import { useCookies } from 'react-cookie'
 import {useNavigate} from 'react-router-dom'
 import Grid from '@mui/material/Unstable_Grid2';
-import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { Alert, Box, Button, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
+import { Alert, Button, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
 
 function Login() {
 
@@ -22,7 +21,7 @@ function Login() {
 
     useEffect(() => {
         if(userToken['myToken'] && userToken['myToken'] !== undefined ){
-            navigate('/')
+            navigate('/transactions')
         }
     }, [userToken])
 
@@ -57,9 +56,9 @@ function Login() {
             justifyContent="center"
             flexDirection='row'
             alignItems='center'
-            sx={{textAlign: 'center', mt: 35, ml: 57, border: 1, borderRadius: '25px', borderWidth: '3px', width: '50%'}}>
+            sx={{textAlign: 'center', mt: 25, ml: 25, border: 1, borderRadius: '25px', borderWidth: '3px', width: '75%'}}>
                 <Grid xs={12}>
-                    {isLogin ? <h1 style={{textAlign:'center'}} className='pb-4 pt-4'>Log In</h1> : <h1 className='pb-4 pt-4'>Register</h1>}
+                    {isLogin ? <h1>Log In</h1> : <h1>Register</h1>}
                     <FormControl sx={{mt: 1, width: '75ch'}} variant='outlined'>
                         <InputLabel sx={{color: 'white'}} htmlFor='username' error = {isLoginError}>Username</InputLabel>
                         <OutlinedInput
@@ -111,7 +110,7 @@ function Login() {
                 {isLoginError ? <Alert severity="error" sx={{ mt: 1, width: '400px', textAlign: 'center'}}>You have entered an invalid username{isLogin ? ' or password' : ' email, or password'}!</Alert> : null}
 
                 <Grid xs={12}>
-                    {isLogin ? <Button variant="outlined" color="primary" sx={{mt: 1, textAlign: 'center'}} onClick={onLogIn}>Log In</Button> : <Button variant="outlined" color="primary" sx={{mt: 1}} onClick={onSignUp}>SignUp</Button>}
+                    {isLogin ? <Button variant="outlined" color="primary" sx={{mt: 1, textAlign: 'center'}} onClick={onLogIn}>Log In</Button> : <Button variant="outlined" color="primary" sx={{mt: 1}} onClick={onSignUp}>Sign Up</Button>}
                 </Grid>   
 
                 <br/>

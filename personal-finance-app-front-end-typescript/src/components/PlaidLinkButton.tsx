@@ -35,8 +35,8 @@ function PlaidLinkButton(props: LinkProps) {
         body: JSON.stringify({ public_token }),
         });
 
-        getAccountDataFromPlaid();
-        getTransactionDataFromPlaid();
+        await getAccountDataFromPlaid();
+        await getTransactionDataFromPlaid();
     }, []);
     const config: Parameters<typeof usePlaidLink>[0] = {
         token: props.linkToken!,
@@ -44,7 +44,7 @@ function PlaidLinkButton(props: LinkProps) {
     };
     const { open, ready } = usePlaidLink(config);
     return (
-        <Button variant="outlined" color="error" sx={{mt: 1}} onClick={() => open()} disabled={!ready}>
+        <Button variant="outlined" color="error" onClick={() => open()} disabled={!ready}>
           Link Accounts
         </Button>
     );
