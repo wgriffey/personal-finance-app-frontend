@@ -1,12 +1,15 @@
 import React from 'react';
 import { LinkProps } from '../interfaces/LinkProps';
 import { usePlaidLink } from 'react-plaid-link';
-import APIService from '../APIService';
+import APIService from '../services/APIService';
 import Button from '@mui/material/Button';
-
-
+import { useTheme } from '@mui/material/styles';
+import { tokens } from '../theme';
 
 function PlaidLinkButton(props: LinkProps) {
+    const theme: any = useTheme();
+    const colors: any = tokens(theme.palette.mode);
+    
     const getAccountDataFromPlaid = () => {
         APIService.GetAccountDataFromPlaid(props.userToken!)
         .then(res => {
@@ -23,6 +26,14 @@ function PlaidLinkButton(props: LinkProps) {
         .catch(err => console.log(err));
     }
 
+    const getInvestmentDataFromPlaid = () => {
+        APIService.GetInvestmentDataFromPlaid(props.userToken!)
+        .then(res => {
+            console.log(res)
+        })
+        .catch(err => console.log(err))
+    }
+
     const onSuccess = React.useCallback(async (public_token: any, metadata: any) => {
         // send public_token to server
         const response = await fetch('http://127.0.0.1:8000/api/set_access_token/', {
@@ -35,8 +46,9 @@ function PlaidLinkButton(props: LinkProps) {
         body: JSON.stringify({ public_token }),
         });
 
-        await getAccountDataFromPlaid();
-        await getTransactionDataFromPlaid();
+        getAccountDataFromPlaid();
+        getTransactionDataFromPlaid();
+        getInvestmentDataFromPlaid();
     }, []);
     const config: Parameters<typeof usePlaidLink>[0] = {
         token: props.linkToken!,
@@ -44,7 +56,7 @@ function PlaidLinkButton(props: LinkProps) {
     };
     const { open, ready } = usePlaidLink(config);
     return (
-        <Button variant="outlined" color="error" onClick={() => open()} disabled={!ready}>
+        <Button variant="outlined" sx={{color: colors.redAccent[600], borderColor: colors.redAccent[600], '&:hover':{background: colors.redAccent[700], color: colors.primary[400]}}} onClick={() => open()} disabled={!ready}>
           Link Accounts
         </Button>
     );

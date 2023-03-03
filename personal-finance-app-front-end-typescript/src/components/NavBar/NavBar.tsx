@@ -10,14 +10,21 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
+import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
+import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import Button from '@mui/material/Button';
+import { useTheme } from '@mui/material/styles';
+import { ColorModeContext, tokens } from '../../theme';
 
 export default function NavBar() {
+    const theme: any = useTheme();
+    const colors: any = tokens(theme.palette.mode);
+    const colorMode: any = useContext(ColorModeContext);
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [userToken, setUserToken, removeUserToken] = useCookies<string>(['myToken']);
     const navigate = useNavigate();
@@ -41,7 +48,7 @@ export default function NavBar() {
     };
 
     const drawer = (
-        <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+        <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center', backgroundColor: colors.primary[400] }}>
             <Typography variant="h6" sx={{ my: 2 }}>
                 G&E Personal Finance
             </Typography>
@@ -73,34 +80,40 @@ export default function NavBar() {
     );
 
     return (
-        <Box sx={{ display: 'flex', mb: '40px' }}>
+        <Box sx={{mb: 10}}>
             <CssBaseline />
-            <AppBar component="nav" style={{backgroundColor: '#F2F2F2', color: '#282c34'}}>
+            <AppBar component="nav" style={{backgroundColor: colors.primary[400]}}>
                 <Toolbar>
                 <IconButton
                     color="inherit"
                     aria-label="open drawer"
                     edge="start"
                     onClick={handleDrawerToggle}
-                    sx={{ mr: 2, display: { sm: 'none' } }}
+                    sx={{ mr: 2, display: { sm: 'none' }}}
                 >
                     <MenuIcon />
                 </IconButton>
+                <IconButton onClick={colorMode.toggleColorMode} sx={{ml: '85%', display: {sm: 'none'}}}>
+                    {theme.palette.mode ==='dark' ? <DarkModeOutlinedIcon/> : <LightModeOutlinedIcon/>}
+                </IconButton>
                 <Typography
-                    variant="h6"
+                    variant="h5"
                     component="div"
-                    sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                    sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' }, color:colors.gold[600]}}
                 >
                     G&E Personal Finance
                 </Typography>
-                <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                    <Button onClick={() => navigate('/transactions')} sx={{ color: '#282c34' }}>Transactions</Button>
-                    <Button onClick={() => navigate('/investments')} sx={{ color: '#282c34' }}>Investments</Button>
-                    <Button onClick={() => onLogOut()} sx={{ color: '#282c34' }}>Log Out</Button>
+                <Box sx={{ display: { xs: 'none', sm: 'block'}}}>
+                    <IconButton onClick={colorMode.toggleColorMode} sx={{color: colors.gold[600]}}>
+                        {theme.palette.mode ==='dark' ? <DarkModeOutlinedIcon/> : <LightModeOutlinedIcon/>}
+                    </IconButton>
+                    <Button onClick={() => navigate('/transactions')} sx={{color:colors.gold[600], fontSize: '14px', '&:hover':{background: colors.gold[700], color: colors.primary[400]}}}>Transactions</Button>
+                    <Button onClick={() => navigate('/investments')} sx={{color:colors.gold[600], fontSize: '14px', '&:hover':{background: colors.gold[700], color: colors.primary[400]}}}>Investments</Button>
+                    <Button onClick={() => onLogOut()} sx={{color:colors.gold[600], fontSize: '14px', '&:hover':{background: colors.gold[700], color: colors.primary[400]}}}>Log Out</Button>
                 </Box>
                 </Toolbar>
             </AppBar>
-            <Box component="nav">
+            <Box component="nav" display='flex'>
                 <Drawer
                 variant="temporary"
                 open={mobileOpen}

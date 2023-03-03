@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Account } from './interfaces/Account'
-import { AuthToken } from './interfaces/AuthToken'
-import { User } from './interfaces/User'
+import { Account } from '../interfaces/Account'
+import { AuthToken } from '../interfaces/AuthToken'
+import { User } from '../interfaces/User'
 
 
 export default class APIService{
@@ -62,6 +62,28 @@ export default class APIService{
 
     static async GetTransactionDataFromDB(token: any){
         const res = await fetch(`http://127.0.0.1:8000/api/get_transactions_from_db`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${token}`
+            }
+        })
+        return await res.json()
+    }
+
+    static async GetInvestmentDataFromPlaid(token: any){
+        const res = await fetch(`http://127.0.0.1:8000/api/get_investments_from_plaid`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${token}`
+            }
+        })
+        return await res.json()
+    }
+
+    static async GetInvestmentDataFromDB(token: any){
+        const res = await fetch(`http://127.0.0.1:8000/api/get_investments_from_db`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

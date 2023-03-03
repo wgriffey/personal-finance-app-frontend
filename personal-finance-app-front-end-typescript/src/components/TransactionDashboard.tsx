@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie'
 import {useNavigate} from 'react-router-dom'
-import APIService from '../APIService';
+import APIService from '../services/APIService';
 import { Account } from '../interfaces/Account';
 import { Transaction } from '../interfaces/Transaction';
 import { GoogleChartOptions } from 'react-google-charts';
 import GoogleCharts from './GoogleChart';
 import PlaidLinkButton from './PlaidLinkButton';
 import Grid from '@mui/material/Unstable_Grid2';
-import { Button } from '@mui/material';
+import { Button, useTheme } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -18,8 +18,13 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { TransactionTableColumn } from '../interfaces/TransactionTableColumn';
 import { TransactionTableRow } from '../interfaces/TransactionTableRow';
+import AccountsDashboard from './AccountsDashboard';
+import { tokens } from '../theme';
+import Typography from '@mui/material/Typography';
 
 function TransactionDashboard() {
+    const theme: any = useTheme();
+    const colors: any = tokens(theme.palette.mode);
     const [linkToken, setLinkToken] = useState(null);
     const [userToken] = useCookies<string>(['myToken']);
     const [userAccounts, setUserAccounts] = useState<Account[]>([]);
@@ -35,14 +40,14 @@ function TransactionDashboard() {
         width: 500,
         height: 350,
         chartArea:{top:15, right: 60, width:'100%', height:'85%'},
-        backgroundColor: '#282c34', 
-        legend: {textStyle:{color: 'white', fontSize: 16}, alignment: 'center', position: 'right'}
+        backgroundColor: colors.primary[400], 
+        legend: {textStyle:{color: colors.primary[100], fontSize: 16}, alignment: 'center', position: 'right'},
     }
 
     const transactionTableColumns: readonly TransactionTableColumn[] = [
         {id: 'account', label: 'Account', minWidth: 1, align: 'center'},
         {id: 'date', label: 'Date', minWidth: 15, align: 'center', format: (value: Date) => value.toString()},
-        {id: 'amount', label: 'Amount', minWidth: 20, align: 'center', format: (value: number) => value.toFixed(2)},
+        {id: 'amount', label: 'Amount', minWidth: 20, align: 'center', format: (value: number) => '$' + value.toFixed(2)},
         {id: 'company_name', label: 'Company Name', minWidth: 20, align: 'center'},
         {id: 'payment_channel', label: 'Payment Channel', minWidth: 2, align: 'center'},
         {id: 'category', label: 'Category', minWidth: 2, align: 'center'},
@@ -58,10 +63,6 @@ function TransactionDashboard() {
         const data = await response.json();
         setLinkToken(data.link_token);
     };
-    
-    useEffect(() => {
-      generateToken();
-    }, []);
 
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
@@ -110,7 +111,7 @@ function TransactionDashboard() {
                 tran_id: tran.id,
                 account: transactionAccount?.name,
                 date: tran.date?.toString(),
-                amount: tran.amount,
+                amount: tran.amount <= 0 ? Math.abs(tran.amount) : -Math.abs(tran.amount),
                 company_name: tran.name,
                 payment_channel: tran.payment_channel,
                 category: tran.primary_category,
@@ -122,28 +123,25 @@ function TransactionDashboard() {
         setTransactionRowData(transactionRowDataToPush);
     }
 
+    // On Init
     useEffect(() => {
-        if(showTransactionChart){
-            buildTransactionChartData();
-        }
-        else{
-            setTransactionChartData([['','']]);
-        }
-    }, [showTransactionChart])
+        generateToken();
+        getAccountDataFromDB();
+        getTransactionDataFromDB();
+    }, []);
 
+    // On User Token Change (Log Out)
     useEffect(() => {
         if(!userToken['myToken']){
             navigate('/login')
         }
-        else{
-            getAccountDataFromDB();
-            getTransactionDataFromDB();
-        }
     }, [userToken]);
 
+    // On Transactions Chnage
     useEffect(() => {
         if (userTransactions.length !== 0){
             setShowTransactionChart(true);
+            buildTransactionChartData();
             buildTransactionRowData();
         }
     }, [userTransactions])
@@ -153,28 +151,18 @@ function TransactionDashboard() {
         <>
             <Grid container rowSpacing={2}>
                 <Grid xs={12}>
-                    <h1>Transactions Dashboard</h1>
+                    <Typography variant='h1'>Transactions Dashboard</Typography>
                 </Grid>
                 <Grid xs={5}>
                     {linkToken != null ? <PlaidLinkButton linkToken={linkToken} userToken={userToken['myToken']} /> : <></>}
                 </Grid>
                 <Grid xs={6}>
-                    {userAccounts.length === 0 ? <Button variant='outlined' style={{color: '#C3E4ED', borderColor: '#C3E4ED'}} onClick={() => {getAccountDataFromDB(); getTransactionDataFromDB();}}>Get Account and Transaction Data</Button> : <Button variant='outlined' style={{color: '#C3E4ED', borderColor: '#C3E4ED'}} onClick={() => {getAccountDataFromDB(); getTransactionDataFromDB()}}>Refresh Account and Transaction Data</Button>}
+                    {userAccounts.length === 0 ? <Button variant='outlined' sx={{color: colors.greenAccent[300], borderColor: colors.greenAccent[300], '&:hover':{background: colors.greenAccent[600], color: colors.primary[400]}}} onClick={() => {getAccountDataFromDB(); getTransactionDataFromDB();}}>Get Account and Transaction Data</Button> : <Button variant='outlined' sx={{color: colors.greenAccent[300], borderColor: colors.greenAccent[300], '&:hover':{background: colors.greenAccent[600], color: colors.primary[400]}}} onClick={() => {getAccountDataFromDB(); getTransactionDataFromDB()}}>Refresh Account and Transaction Data</Button>}
                 </Grid>
-                
+                <Grid xs={12}>
+                    <AccountsDashboard accounts={ userAccounts } />
+                </Grid>
             </Grid>
-            {/* <div className='text-lg-center'>
-                {userAccounts.length !== 0 ? userAccounts.map((account: Account) => {
-                    return(
-                        <div className='mt-4' key={account.account_id}>
-                            <h2>{account.name}</h2>
-                            <p>Current Balance ${account.current_balance?.toFixed(2)}</p>
-                            <p>Available Balance: ${account.available_balance?.toFixed(2)}</p>
-                        </div>
-                    )
-                    
-                }) : null}
-            </div> */}
             <Grid container rowSpacing={2} sx={{mt: 2}}>
                 <GoogleCharts chartType='PieChart' data={transactionChartData} options={transactionCategoryChartOptions} />
             </Grid>
@@ -186,7 +174,7 @@ function TransactionDashboard() {
                                 <TableCell
                                 key={column.id}
                                 align={column.align}
-                                style={{ minWidth: column.minWidth, color: '#282c34', backgroundColor: '#C3E4ED', fontSize: 18}}
+                                style={{ minWidth: column.minWidth, color: colors.primary[100], backgroundColor: colors.blueAccent[700], fontSize: 18}}
                                 >
                                 {column.label}
                                 </TableCell>
@@ -200,9 +188,9 @@ function TransactionDashboard() {
                                     {transactionTableColumns.map((column) => {
                                     const value = row[column.id];
                                     return (
-                                        <TableCell key={column.id} align={column.align} style={{backgroundColor: '#F2F2F2', color: '#282c34'}}>
+                                        <TableCell key={column.id} align={column.align} style={{backgroundColor: colors.primary[400], color: colors.primary[100], fontSize: 14}}>
                                         {column.format && typeof value === 'number'
-                                            ? '$' + column.format(value)
+                                            ? column.format(value)
                                             : value}
                                         </TableCell>
                                     );
@@ -221,7 +209,7 @@ function TransactionDashboard() {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
-            style={{backgroundColor: '#F2F2F2', color: '#282c34'}}
+            style={{backgroundColor: colors.blueAccent[700], color: colors.primary[100]}}
             />
         </>
     )
