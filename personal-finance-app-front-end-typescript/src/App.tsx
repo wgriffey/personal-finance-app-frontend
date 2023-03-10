@@ -2,7 +2,7 @@ import {Routes, Route, useLocation} from 'react-router-dom'
 import './App.css';
 import TransactionDashboard from './components/TransactionDashboard';
 import Login from './components/Login';
-import NavBar from './components/NavBar/NavBar';
+import NavBar from './components/NavBar';
 import InvestmentsDashboard from './components/InvestmentsDashboard';
 import { ColorModeContext, tokens, useMode } from './theme';
 import { CssBaseline, ThemeProvider } from '@mui/material';

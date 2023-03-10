@@ -19,7 +19,7 @@ import { useCookies } from 'react-cookie';
 import { useContext, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
-import { ColorModeContext, tokens } from '../../theme';
+import { ColorModeContext, tokens } from '../theme';
 
 export default function NavBar() {
     const theme: any = useTheme();
