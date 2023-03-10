@@ -8,7 +8,8 @@ import { InvestmentSecurity } from '../interfaces/InvestmentSecurity';
 import { InvestmentTableColumn } from '../interfaces/InvestmentTableColumn';
 import APIService from '../services/APIService';
 import { InvestmentTableRow } from '../interfaces/InvestmentTableRow';
-import { Button, useTheme } from '@mui/material';
+import { Button, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -122,7 +123,7 @@ function InvestmentsDashboard() {
         <>
             <Grid container rowSpacing={2}>
                 <Grid xs={12}>
-                    <h1>Investments DashBoard</h1>
+                    <Typography variant='h1'>Investment Dashboard</Typography>
                 </Grid>
                 <Grid xs={5}>
                     {linkToken != null ? <PlaidLinkButton linkToken={linkToken} userToken={userToken['myToken']} /> : <></>}
@@ -140,7 +141,7 @@ function InvestmentsDashboard() {
                                 <TableCell
                                 key={column.id}
                                 align={column.align}
-                                style={{ minWidth: column.minWidth, color: colors.primary[100], backgroundColor: colors.blueAccent[700], fontSize: 18}}
+                                style={{ minWidth: column.minWidth, color: colors.gold[600], backgroundColor: colors.blueAccent[700], fontSize: 18}}
                                 >
                                 {column.label}
                                 </TableCell>
@@ -175,7 +176,7 @@ function InvestmentsDashboard() {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
-            style={{backgroundColor: colors.blueAccent[700], color: colors.primary[100]}}
+            style={{backgroundColor: colors.blueAccent[700], color: colors.gold[600]}}
             />
         </>
     )

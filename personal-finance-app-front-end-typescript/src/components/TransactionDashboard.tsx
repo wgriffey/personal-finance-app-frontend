@@ -8,7 +8,8 @@ import { GoogleChartOptions } from 'react-google-charts';
 import GoogleCharts from './GoogleChart';
 import PlaidLinkButton from './PlaidLinkButton';
 import Grid from '@mui/material/Unstable_Grid2';
-import { Button, useTheme } from '@mui/material';
+import { Button } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -41,7 +42,7 @@ function TransactionDashboard() {
         height: 350,
         chartArea:{top:15, right: 60, width:'100%', height:'85%'},
         backgroundColor: colors.primary[400], 
-        legend: {textStyle:{color: colors.primary[100], fontSize: 16}, alignment: 'center', position: 'right'},
+        legend: {textStyle:{color: colors.gold[600], fontSize: 16}, alignment: 'center', position: 'right'},
     }
 
     const transactionTableColumns: readonly TransactionTableColumn[] = [
@@ -159,9 +160,9 @@ function TransactionDashboard() {
                 <Grid xs={6}>
                     {userAccounts.length === 0 ? <Button variant='outlined' sx={{color: colors.greenAccent[300], borderColor: colors.greenAccent[300], '&:hover':{background: colors.greenAccent[600], color: colors.primary[400]}}} onClick={() => {getAccountDataFromDB(); getTransactionDataFromDB();}}>Get Account and Transaction Data</Button> : <Button variant='outlined' sx={{color: colors.greenAccent[300], borderColor: colors.greenAccent[300], '&:hover':{background: colors.greenAccent[600], color: colors.primary[400]}}} onClick={() => {getAccountDataFromDB(); getTransactionDataFromDB()}}>Refresh Account and Transaction Data</Button>}
                 </Grid>
-                <Grid xs={12}>
+                {/* <Grid xs={12}>
                     <AccountsDashboard accounts={ userAccounts } />
-                </Grid>
+                </Grid> */}
             </Grid>
             <Grid container rowSpacing={2} sx={{mt: 2}}>
                 <GoogleCharts chartType='PieChart' data={transactionChartData} options={transactionCategoryChartOptions} />
@@ -174,7 +175,7 @@ function TransactionDashboard() {
                                 <TableCell
                                 key={column.id}
                                 align={column.align}
-                                style={{ minWidth: column.minWidth, color: colors.primary[100], backgroundColor: colors.blueAccent[700], fontSize: 18}}
+                                style={{ minWidth: column.minWidth, color: colors.gold[600], backgroundColor: colors.blueAccent[700], fontSize: 18}}
                                 >
                                 {column.label}
                                 </TableCell>
@@ -209,7 +210,7 @@ function TransactionDashboard() {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
-            style={{backgroundColor: colors.blueAccent[700], color: colors.primary[100]}}
+            style={{backgroundColor: colors.blueAccent[700], color: colors.gold[600]}}
             />
         </>
     )

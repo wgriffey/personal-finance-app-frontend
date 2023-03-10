@@ -185,30 +185,36 @@ export const themeSettings = (mode: PaletteMode) => {
         typography: {
             fontFamily: ['Source Sans Pro', 'sans-serif'].join(','),
             fontSize: 12,
-            fontColor: colors.gold[600],
+            color: colors.gold[600],
             h1: {
                 fontFamily: ['Source Sans Pro', 'sans-serif'].join(','),
                 fontSize: 40,
+                color: colors.gold[600],
             },
             h2: {
                 fontFamily: ['Source Sans Pro', 'sans-serif'].join(','),
                 fontSize: 32,
+                color: colors.gold[600],
             },
             h3: {
                 fontFamily: ['Source Sans Pro', 'sans-serif'].join(','),
                 fontSize: 24,
+                color: colors.gold[600],
             },
             h4: {
                 fontFamily: ['Source Sans Pro', 'sans-serif'].join(','),
                 fontSize: 20,
+                color: colors.gold[600],
             },
             h5: {
                 fontFamily: ['Source Sans Pro', 'sans-serif'].join(','),
                 fontSize: 16,
+                color: colors.gold[600],
             },
             h6: {
                 fontFamily: ['Source Sans Pro', 'sans-serif'].join(','),
                 fontSize: 14,
+                fontColor: colors.gold[600],
             }
         }
     };

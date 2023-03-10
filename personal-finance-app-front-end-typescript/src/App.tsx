@@ -14,7 +14,7 @@ function App() {
     let appStyle: any = {
         backgroundColor: colors.primary[400],
         overflow: 'hidden',
-        minHeight: '100vh'
+        minHeight: '100dvh'
     }
     return (
         <ColorModeContext.Provider value={colorMode}>

@@ -50,14 +50,14 @@ function Login() {
     }
 
   return (
-    <Box  display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100dvh">
         <Grid container rowSpacing={2}
             justifyContent="center"
             textAlign='center'
-            sx={{border: 1, borderRadius: '25px', borderWidth: '3px', width: '75%'}}>
+            sx={{border: 1, borderRadius: '25px', borderWidth: '3px', width: '60%'}}>
                 <Grid xs={12}>
                     {isLogin ? <h1>Log In</h1> : <h1>Register</h1>}
-                    <FormControl sx={{mt: 1, width: '75ch'}} variant='outlined'>
+                    <FormControl sx={{mt: 1, width: '70%'}} variant='outlined'>
                         <InputLabel htmlFor='username' error = {isLoginError}>Username</InputLabel>
                         <OutlinedInput
                         id='username'
@@ -70,7 +70,7 @@ function Login() {
 
                 {!isLogin ? 
                     <Grid xs={12}>
-                        <FormControl sx={{mt: 1, width: '75ch'}} variant='outlined'>
+                        <FormControl sx={{mt: 1, width: '70%'}} variant='outlined'>
                             <InputLabel htmlFor='email' error = {isLoginError}>E-mail</InputLabel>
                             <OutlinedInput type='email' id='email' label='E-mail' onChange={(e) => setEmail(e.target.value)} error = {isLoginError}/>
                         </FormControl>
@@ -78,7 +78,7 @@ function Login() {
                 : null}
 
                 <Grid xs={12}>
-                    <FormControl sx={{mt: 1, width: '75ch'}} variant='outlined'>
+                    <FormControl sx={{mt: 1, width: '70%'}}>
                         <InputLabel htmlFor='password' error = {isLoginError}>Password</InputLabel>
                         <OutlinedInput
                         id='password'
