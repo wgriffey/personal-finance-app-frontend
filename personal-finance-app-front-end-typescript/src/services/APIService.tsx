@@ -1,6 +1,3 @@
-import React, { Component } from 'react'
-import { Account } from '../interfaces/Account'
-import { AuthToken } from '../interfaces/AuthToken'
 import { User } from '../interfaces/User'
 
 
@@ -13,7 +10,7 @@ export default class APIService{
             },
             body: JSON.stringify(body)
         })
-        return await res.json()
+        return res.json()
     }
 
     static async SignUpUser(body: User){
@@ -24,7 +21,7 @@ export default class APIService{
             },
             body: JSON.stringify(body)
         })
-        return await res.json()        
+        return res.json()        
     }
 
     static async GetAccountDataFromPlaid(token: any){
@@ -35,7 +32,7 @@ export default class APIService{
                 'Authorization': `Token ${token}`
             }
         })
-        return await res.json()
+        return res.json()
     }
 
     static async GetAccountDataFromDB(token: any){
@@ -46,7 +43,7 @@ export default class APIService{
                 'Authorization': `Token ${token}`
             }
         })
-        return await res.json()
+        return res.json()
     }
 
     static async GetTransactionDataFromPlaid(token: any){
@@ -57,7 +54,7 @@ export default class APIService{
                 'Authorization': `Token ${token}`
             }
         })
-        return await res.json()
+        return res.json()
     }
 
     static async GetTransactionDataFromDB(token: any){
@@ -68,7 +65,7 @@ export default class APIService{
                 'Authorization': `Token ${token}`
             }
         })
-        return await res.json()
+        return res.json()
     }
 
     static async GetInvestmentDataFromPlaid(token: any){
@@ -79,7 +76,7 @@ export default class APIService{
                 'Authorization': `Token ${token}`
             }
         })
-        return await res.json()
+        return res.json()
     }
 
     static async GetInvestmentDataFromDB(token: any){
@@ -90,6 +87,6 @@ export default class APIService{
                 'Authorization': `Token ${token}`
             }
         })
-        return await res.json()
+        return res.json()
     }
 }
