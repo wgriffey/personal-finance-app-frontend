@@ -49,6 +49,12 @@ function Login() {
         .catch(error => console.log(error))
     }
 
+    const onSignUp2 = () => {
+        APIService.SignUpUser({username, email, password})
+        .then(() => onLogIn())
+        .catch(error => console.log(error))
+    }
+
   return (
     <Box display="flex" justifyContent="center" alignItems="center" minHeight="100dvh">
         <Grid container rowSpacing={2}
