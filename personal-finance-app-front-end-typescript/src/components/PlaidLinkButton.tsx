@@ -36,7 +36,7 @@ function PlaidLinkButton(props: LinkProps) {
 
     const onSuccess = React.useCallback(async (public_token: any, metadata: any) => {
         // send public_token to server
-        const response = await fetch('http://127.0.0.1:8000/api/set_access_token/', {
+        await fetch('http://127.0.0.1:8000/api/set_access_token/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

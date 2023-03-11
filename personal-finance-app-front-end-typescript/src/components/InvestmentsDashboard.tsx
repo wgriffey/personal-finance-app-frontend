@@ -45,24 +45,20 @@ function InvestmentsDashboard() {
         {id: 'gain_loss_percentage', label: 'Gain/Loss %', minWidth: 10, align: 'center', format: (value: number) => (value * 100).toFixed(2) + '%'}
     ]
 
-    const generateToken = async () => {
-        const response = await fetch('http://127.0.0.1:8000/api/create_link_token/', {
-        method: 'POST',
-        headers:{
-            'Authorization': `Token ${userToken['myToken']}`
-        }});
-        const data = await response.json();
-        setLinkToken(data.link_token);
-    };
+    const generateLinkToken = () => {
+        APIService.GenerateLinkToken(userToken['myToken'])
+        .then(res => setLinkToken(res.link_token))
+        .catch(err => console.log(err))
+    }
 
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
       };
     
-      const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-      };
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+    };
 
     const getAccountDataFromDB = () => {
         APIService.GetAccountDataFromDB(userToken['myToken'])
@@ -81,7 +77,7 @@ function InvestmentsDashboard() {
 
     // On Init
     useEffect(() => {
-        generateToken();
+        generateLinkToken();
         getAccountDataFromDB();
         getInvestmentDataFromDB();
     }, []);

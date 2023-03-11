@@ -89,4 +89,14 @@ export default class APIService{
         })
         return res.json()
     }
+
+    static async GenerateLinkToken(token: any){
+        const res = await fetch('http://127.0.0.1:8000/api/create_link_token/', {
+            method: 'POST',
+            headers:{
+                'Authorization': `Token ${token}`
+            }
+        });
+        return res.json();
+    };
 }
